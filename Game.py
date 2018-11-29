@@ -193,7 +193,6 @@ class TurretGame(QWidget):
         else:
             tile[y][x] = "P"
 
-
         return tile
 
     def ButtonEvent(self):

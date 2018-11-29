@@ -1,4 +1,4 @@
-from fucking import Turret
+from GameLogic import Turret
 
 class Game():
     def __init__(self):
