@@ -110,4 +110,3 @@ if __name__ == '__main__':
     game = TurretGame()
     game.show()
     sys.exit(app.exec_())
-
