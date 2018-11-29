@@ -11,7 +11,7 @@ class Game():
 
     def newGame(self):
         self.turret.game()
-        self.tile = self.turret.tile
+        self.tile = self.turret.getTile()
 
     def getCoordinate(self, n, m):
         return self.tile[n][m]
