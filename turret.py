@@ -22,6 +22,9 @@ class Game():
     def getArray(self):
         return self.turret.getArray()
 
+    def getTurrets(self):
+        return self.turret.getTurrets()
+
 if __name__ == '__main__':
     game = Game()
     game.Setting(0.2, [20,10])

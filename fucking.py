@@ -1,9 +1,13 @@
 import random
 class Turret():
     def __init__(self):
+        self.turrets = 0
         self.turret = 0.3
         self.tile = []
         self.array = []
+
+    def getTurrets(self):
+        return self.turrets
 
     def getTile(self):
         return self.tile
@@ -19,13 +23,14 @@ class Turret():
 
     def game(self):
         self.tile = []
-
+        self.turrets = 0
         for i in range(self.array[0]):
             list = []
             for j in range(self.array[1])   :
                 p = random.random()
                 if  float(p) < self.turret:
                     list.append("*")
+                    self.turrets += 1
                 else:
                     list.append("-")
             self.tile.append(list)
