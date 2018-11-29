@@ -106,6 +106,7 @@ class TurretGame(QWidget):
         self.turretButton[y][x].setEnabled(False)
         if button.text() == "*":
             self.timer.stop()
+            self.turretsDisplay.setText("BOOM!!")
             self.Boom()
         elif button.text() == "0":
             zeroArray = self.RecursiveZero(self.MakeRecusive(self.turret.getTile()),x, y)
