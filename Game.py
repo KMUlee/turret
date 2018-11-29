@@ -92,6 +92,7 @@ class TurretGame(QWidget):
         self.turret = Game()
         self.turret.Setting(self.default[0],self.default[1])
         self.turret.newGame()
+        self.copy = self.MakeRecusive(self.turret.getTile())
         self.timer.start()
         self.time = 0
         self.turrets = self.turret.getTurrets()
@@ -107,12 +108,12 @@ class TurretGame(QWidget):
             where = self.turret.getCoordinate(y, x)
             self.turretButton[y][x].set(where)
             self.turretButton[y][x].setStyleSheet("background-color : lightgreen")
-            self.turretButton[y][x].setEnabled(False)
+            self.turretButton[y][x].setEnabled(True)
             if button.text() == "*":
                 self.timer.stop()
                 self.Boom()
             elif button.text() == "0":
-                zeroArray = self.RecursiveZero(self.MakeRecusive(self.turret.getTile()), x, y)
+                zeroArray = self.R(self.MakeRecusive(self.turret.getTile()), x, y)
                 for ys in range(len(zeroArray)):
                     for xs in range(len(zeroArray[0])):
                         if zeroArray[ys][xs] == 'K' or zeroArray[ys][xs] == 'P':
@@ -123,7 +124,7 @@ class TurretGame(QWidget):
                                 self.turretButton[ys][xs].setEnabled(False)
                             else:
                                 self.turretButton[ys][xs].setStyleSheet("background-color : lightgreen")
-                                self.turretButton[ys][xs].setEnabled(False)
+                                self.turretButton[ys][xs].setEnabled(True)
 
         elif self.test == 0:
             if key == "F":
@@ -178,34 +179,22 @@ class TurretGame(QWidget):
             returret.append((recol))
         return returret
 
-    def RecursiveZero(self, turret, x, y):
-
-        copy = turret.copy()
-
-        if copy[y][x] == '0':
-            copy[y][x] = 'P'
-            if y != len(copy) - 1:
-                if copy[y + 1][x] != '0' and copy[y + 1][x] != 'P':
-                    copy[y + 1][x] = 'K'
-                else:
-                    self.RecursiveZero(copy, x, y + 1)
-            if x != len(copy[0]) - 1:
-                if copy[y][x + 1] != '0' and copy[y][x + 1] != 'P':
-                    copy[y][x + 1] = 'K'
-                else:
-                    self.RecursiveZero(copy, x + 1, y)
+    def R(self, tile, x, y):
+        if tile[y][x] == "0":
+            tile[y][x] = "P"
             if x != 0:
-                if copy[y][x - 1] != '0' and copy[y][x - 1] != 'P':
-                    copy[y][x - 1] = 'K'
-                else:
-                    self.RecursiveZero(copy, x - 1, y)
-
+                self.R(tile,x-1,y)
+            if x != self.default[1][1] - 1:
+                self.R(tile,x+1,y)
             if y != 0:
-                if copy[y - 1][x] != '0' and copy[y - 1][x] != 'P':
-                    copy[y - 1][x] = 'K'
-                else:
-                    self.RecursiveZero(copy, x, y - 1)
-        return copy
+                self.R(tile,x,y-1)
+            if y != self.default[1][0]-1:
+                self.R(tile,x,y+1)
+        else:
+            tile[y][x] = "P"
+
+
+        return tile
 
     def ButtonEvent(self):
         button = self.sender()
@@ -222,7 +211,7 @@ class TurretGame(QWidget):
                 self.Flag.setStyleSheet("color : red")
             elif self.test == 0:
                 self.test =1
-                self.Flag.setStyleSheet("color : balck")
+                self.Flag.setStyleSheet("color : black")
 
 
 if __name__ == '__main__':
