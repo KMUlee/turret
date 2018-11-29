@@ -1,4 +1,5 @@
 from turret import Game
+import time
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLayout, QGridLayout, QVBoxLayout, QHBoxLayout
 from PyQt5.QtWidgets import QTextEdit, QLineEdit, QToolButton, QLabel
@@ -33,7 +34,6 @@ class TurretGame(QWidget):
         self.timer = QTimer()
         self.timer.start(1000)
         self.timer.timeout.connect(self.Timer)
-        self.time = 0
         self.num = 0
         self.test = 1
         self.turretButton = []
@@ -56,7 +56,7 @@ class TurretGame(QWidget):
 
         #Line
         self.turretsDisplay.setAlignment(Qt.AlignCenter)
-        self.timerDisplay = QLineEdit(str(self.time))
+        self.timerDisplay = QLineEdit()
         self.timerDisplay.setAlignment(Qt.AlignCenter)
         self.turretsDisplay.setReadOnly(True)
         self.timerDisplay.setReadOnly(True)
@@ -94,7 +94,7 @@ class TurretGame(QWidget):
         self.turret.newGame()
         self.copy = self.MakeRecusive(self.turret.getTile())
         self.timer.start()
-        self.time = 0
+        self.start = time.time()
         self.turrets = self.turret.getTurrets()
         self.turrets_copy = self.turret.getTurrets()
         self.turretsDisplay.setText(str(self.turrets))
@@ -172,8 +172,14 @@ class TurretGame(QWidget):
         self.StartGame()
 
     def Timer(self):
-        self.time += 1
-        self.timerDisplay.setText(str(self.time))
+        end = time.time()
+        m, s = divmod(end - self.start, 60)
+        time_str = "%02d:%02d" % (m, s)
+        self.timerDisplay.setText(time_str)
+        if time_str == "59:59":
+            self.timer.stop()
+            self.Boom()
+
 
     def MakeRecusive(self, turret):
         returret = []
