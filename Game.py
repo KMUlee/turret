@@ -37,8 +37,11 @@ class TurretGame(QWidget):
         #Layout
         mainLayout = QVBoxLayout()
         turretLayout = QGridLayout()
+        select = QHBoxLayout
 
         #Button
+        Easy = Button(self.Event,"Easy",0,0)
+        Hard = Button(self.Event,"Hard",0,0)
         reStart = Button(self.Clear,"START!!", 0, 0)
         mainLayout.addWidget(reStart)
         self.turretButton = [[0 for j in range(self.default[1][1])] for i in range(self.default[1][0])]
@@ -47,6 +50,8 @@ class TurretGame(QWidget):
                 self.turretButton[y][x] = Button(self.Event, '', x, y)
                 turretLayout.addWidget(self.turretButton[y][x], y, x)
 
+        select.addWidget(Easy)
+        select.addWidget(Hard)
         mainLayout.addLayout(turretLayout)
         self.setLayout(mainLayout)
         self.setWindowTitle("Turret Game")
