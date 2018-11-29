@@ -106,6 +106,8 @@ class TurretGame(QWidget):
         y = button.Y
         if self.test == 1:
             where = self.turret.getCoordinate(y, x)
+            if (button.text() == "F"):
+                return
             self.turretButton[y][x].set(where)
             self.turretButton[y][x].setStyleSheet("background-color : lightgreen")
             self.turretButton[y][x].setEnabled(True)
@@ -119,6 +121,8 @@ class TurretGame(QWidget):
                     for xs in range(len(zeroArray[0])):
                         if zeroArray[ys][xs] == 'K' or zeroArray[ys][xs] == 'P':
                             where2 = self.turret.getCoordinate(ys, xs)
+                            if self.turretButton[ys][xs].text() == "F":
+                                continue
                             self.turretButton[ys][xs].set(where2)
                             if self.turret.getCoordinate(ys, xs) == "0":
                                 self.turretButton[ys][xs].setStyleSheet("background-color : snow")
@@ -132,7 +136,7 @@ class TurretGame(QWidget):
                 self.turretButton[y][x].set(" ")
                 self.turrets += 1
                 self.turretsDisplay.setText(str(self.turrets))
-            else:
+            elif key == " ":
                 if self.turrets > 0:
                     self.turretButton[y][x].set("F")
                     self.turrets -= 1
