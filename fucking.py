@@ -1,5 +1,9 @@
 import random
 class Turret():
+    def __init__(self):
+        self.turret = 0.3
+        self.tile = []
+        self.array = []
 
     def getTile(self):
         return self.tile
