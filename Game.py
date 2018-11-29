@@ -25,23 +25,19 @@ class Button(QToolButton):
         return size
 
 
-
 class TurretGame(QWidget):
 
     def __init__(self, parent = None):
         super().__init__(parent)
         self.turretButton = []
-        self.default = [0.5, [20, 10]]
+        self.default = [0.3, [20, 10]]
         self.StartGame()
 
         #Layout
         mainLayout = QVBoxLayout()
         turretLayout = QGridLayout()
-        select = QHBoxLayout
 
         #Button
-        Easy = Button(self.Event,"Easy",0,0)
-        Hard = Button(self.Event,"Hard",0,0)
         reStart = Button(self.Clear,"START!!", 0, 0)
         mainLayout.addWidget(reStart)
         self.turretButton = [[0 for j in range(self.default[1][1])] for i in range(self.default[1][0])]
@@ -49,9 +45,8 @@ class TurretGame(QWidget):
             for x in range(self.default[1][1]):
                 self.turretButton[y][x] = Button(self.Event, '', x, y)
                 turretLayout.addWidget(self.turretButton[y][x], y, x)
+                self.turretButton[y][x].setStyleSheet("background-color : skyblue")
 
-        select.addWidget(Easy)
-        select.addWidget(Hard)
         mainLayout.addLayout(turretLayout)
         self.setLayout(mainLayout)
         self.setWindowTitle("Turret Game")
@@ -65,20 +60,27 @@ class TurretGame(QWidget):
 
     def Event(self):
         button = self.sender()
-        button.set(self.turret.getCoordinate(button.Y, button.X))
-        Coor = self.turret.getCoordinate(button.Y, button.X)
+        key = button.text()
+        x = button.X
+        y = button.Y
+        where = self.turret.getCoordinate(y, x)
+        self.turretButton[y][x].set(where)
         if button.text() == "*":
             self.Boom()
+
 
     def Boom(self):
         for y in range(self.default[1][0]):
             for x in range(self.default[1][1]):
                 self.turretButton[y][x].set(self.turret.getCoordinate(self.turretButton[y][x].Y, self.turretButton[y][x].X))
+                if self.turretButton[y][x].text() == "*":
+                    self.turretButton[y][x].setStyleSheet("background-color : red")
 
     def Clear(self):
         for y in range(self.default[1][0]):
             for x in range(self.default[1][1]):
                 self.turretButton[y][x].set('')
+                self.turretButton[y][x].setStyleSheet("background-color : skyblue")
         self.StartGame()
 
 
