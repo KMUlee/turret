@@ -37,7 +37,7 @@ class TurretGame(QWidget):
         self.num = 0
         self.test = 1
         self.turretButton = []
-        self.default = [0.25, [15, 10]]
+        self.default = [0.2, [15, 10]]
         self.turretsDisplay = QLineEdit()
         self.StartGame()
 
@@ -134,11 +134,14 @@ class TurretGame(QWidget):
         elif self.test == 0:
             if key == "F":
                 self.turretButton[y][x].set(" ")
+                self.turretButton[y][x].setStyleSheet("color : red")
+                self.turretButton[y][x].setStyleSheet("background-color : skyblue")
                 self.turrets += 1
                 self.turretsDisplay.setText(str(self.turrets))
             elif key == " ":
                 if self.turrets > 0:
                     self.turretButton[y][x].set("F")
+                    self.turretButton[y][x].setStyleSheet("color : red")
                     self.turrets -= 1
                     self.turretsDisplay.setText(str(self.turrets))
             self.Check()
@@ -180,7 +183,6 @@ class TurretGame(QWidget):
             self.timer.stop()
             self.Boom()
 
-
     def MakeRecusive(self, turret):
         returret = []
         for i in turret:
@@ -213,7 +215,7 @@ class TurretGame(QWidget):
             self.default = [0.1,[15,10]]
             self.Clear()
         elif key == "Hard":
-            self.default = [0.25,[15,10]]
+            self.default = [0.2,[15,10]]
             self.Clear()
         elif key == "Flag":
             if self.test == 1:
