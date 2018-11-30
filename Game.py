@@ -99,11 +99,18 @@ class TurretGame(QWidget):
         self.turrets_copy = self.turret.getTurrets()
         self.turretsDisplay.setText(str(self.turrets))
 
+    def
+
     def Event(self):
         button = self.sender()
         key = button.text()
         x = button.X
         y = button.Y
+        if self.test == 1:
+            if self.turret.getCoordinate(y, x) == "*"
+                self.Boom()
+            elif self.turret.getCoordinate(y,x) == "0":
+
         if self.test == 1:
             where = self.turret.getCoordinate(y, x)
             if (button.text() == "F"):
@@ -193,19 +200,15 @@ class TurretGame(QWidget):
         return returret
 
     def R(self, tile, x, y):
+        X = [-1,0,1,-1,1,-1,0,1]
+        Y = [-1,-1,-1,0,0,1,1,1]
         if tile[y][x] == "0":
             tile[y][x] = "P"
-            if x != 0:
-                self.R(tile,x-1,y)
-            if x != self.default[1][1] - 1:
-                self.R(tile,x+1,y)
-            if y != 0:
-                self.R(tile,x,y-1)
-            if y != self.default[1][0]-1:
-                self.R(tile,x,y+1)
+            for i in range(8):
+                if 0 <= x +X[i] <= self.default[1][1]-1 and 0 <= y + Y[i] <= self.default[1][0]-1 :
+                    self.R(tile,x + X[i],y + Y[i])
         else:
             tile[y][x] = "P"
-
         return tile
 
     def ButtonEvent(self):
