@@ -16,6 +16,9 @@ class Game():
     def getCoordinate(self, n, m):
         return self.tile[n][m]
 
+    def setCoordinate(self,n,m,text):
+        self.tile[n][m] = text
+
     def getTile(self):
         return self.tile
 

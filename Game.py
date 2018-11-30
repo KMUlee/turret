@@ -32,14 +32,13 @@ class TurretGame(QWidget):
         super().__init__(parent)
         self.turrets = 0
         self.timer = QTimer()
-        self.timer.start(1000)
         self.timer.timeout.connect(self.Timer)
         self.num = 0
         self.test = 1
+        self.test_2 = 0
         self.turretButton = []
         self.default = [0.2, [15, 10]]
         self.turretsDisplay = QLineEdit()
-        self.StartGame()
 
         #Label
         label = QLabel('Minesweeper!')
@@ -56,7 +55,7 @@ class TurretGame(QWidget):
 
         #Line
         self.turretsDisplay.setAlignment(Qt.AlignCenter)
-        self.timerDisplay = QLineEdit()
+        self.timerDisplay = QLineEdit("00:00")
         self.timerDisplay.setAlignment(Qt.AlignCenter)
         self.turretsDisplay.setReadOnly(True)
         self.timerDisplay.setReadOnly(True)
@@ -73,6 +72,7 @@ class TurretGame(QWidget):
                 turretLayout.addWidget(self.turretButton[y][x], y, x)
                 self.turretButton[y][x].setStyleSheet("background-color : skyblue")
 
+        self.StartGame()
         SelectLayout.addWidget(Easy)
         SelectLayout.addWidget(self.Flag)
         SelectLayout.addWidget(Hard)
@@ -86,72 +86,62 @@ class TurretGame(QWidget):
         self.setLayout(mainLayout)
         self.setWindowTitle("Minesweeper Game")
 
-
     def StartGame(self):
         # Start
         self.turret = Game()
         self.turret.Setting(self.default[0],self.default[1])
         self.turret.newGame()
-        self.copy = self.MakeRecusive(self.turret.getTile())
-        self.timer.start()
-        self.start = time.time()
+        self.timer.stop()
+        self.timerDisplay.setText("00:00")
         self.turrets = self.turret.getTurrets()
         self.turrets_copy = self.turret.getTurrets()
         self.turretsDisplay.setText(str(self.turrets))
 
-    def
-
-    def Event(self):
-        button = self.sender()
-        key = button.text()
-        x = button.X
-        y = button.Y
+    def find(self,x,y):
+        X = [-1, 0, 1, -1, 1, -1, 0, 1]
+        Y = [-1, -1, -1, 0, 0, 1, 1, 1]
         if self.test == 1:
-            if self.turret.getCoordinate(y, x) == "*"
-                self.Boom()
-            elif self.turret.getCoordinate(y,x) == "0":
-
-        if self.test == 1:
-            where = self.turret.getCoordinate(y, x)
-            if (button.text() == "F"):
+            if self.turretButton[y][x].text() == "F":
                 return
-            self.turretButton[y][x].set(where)
-            self.turretButton[y][x].setStyleSheet("background-color : lightgreen")
-            self.turretButton[y][x].setEnabled(True)
-            if button.text() == "*":
-                self.timer.stop()
+            if self.turret.getCoordinate(y, x) == "*":
                 self.turretsDisplay.setText("BOOM!!")
                 self.Boom()
-            elif button.text() == "0":
-                zeroArray = self.R(self.MakeRecusive(self.turret.getTile()), x, y)
-                for ys in range(len(zeroArray)):
-                    for xs in range(len(zeroArray[0])):
-                        if zeroArray[ys][xs] == 'K' or zeroArray[ys][xs] == 'P':
-                            where2 = self.turret.getCoordinate(ys, xs)
-                            if self.turretButton[ys][xs].text() == "F":
-                                continue
-                            self.turretButton[ys][xs].set(where2)
-                            if self.turret.getCoordinate(ys, xs) == "0":
-                                self.turretButton[ys][xs].setStyleSheet("background-color : snow")
-                                self.turretButton[ys][xs].setEnabled(False)
-                            else:
-                                self.turretButton[ys][xs].setStyleSheet("background-color : lightgreen")
-                                self.turretButton[ys][xs].setEnabled(True)
-
+                return
+            if self.turret.getCoordinate(y, x) == "0":
+                self.turretButton[y][x].set("0")
+                self.turret.setCoordinate(y,x,"-")
+                self.turretButton[y][x].setEnabled(False)
+                self.turretButton[y][x].setStyleSheet("background-color : white")
+                for i in range(8):
+                    if 0 <= x + X[i] <= self.default[1][1] - 1 and 0 <= y + Y[i] <= self.default[1][0] - 1:
+                        self.find(x + X[i], y + Y[i])
+            else:
+                if self.turretButton[y][x].text() == "0":
+                    return
+                self.turretButton[y][x].set(self.turret.getCoordinate(y,x))
+                self.turretButton[y][x].setStyleSheet("background-color : lightgreen")
         elif self.test == 0:
-            if key == "F":
+            if self.turretButton[y][x].text() == "F":
                 self.turretButton[y][x].set(" ")
                 self.turretButton[y][x].setStyleSheet("color : red")
                 self.turretButton[y][x].setStyleSheet("background-color : skyblue")
                 self.turrets += 1
                 self.turretsDisplay.setText(str(self.turrets))
-            elif key == " ":
+            elif self.turretButton[y][x].text() == " ":
                 if self.turrets > 0:
                     self.turretButton[y][x].set("F")
                     self.turretButton[y][x].setStyleSheet("color : red")
                     self.turrets -= 1
                     self.turretsDisplay.setText(str(self.turrets))
             self.Check()
+
+    def Event(self):
+        if self.test_2 == 0:
+            self.start = time.time()
+            self.timer.start()
+            self.test_2 = 1
+        button = self.sender()
+        self.find(button.X,button.Y)
 
     def Check(self):
         self.num = 0
@@ -160,20 +150,22 @@ class TurretGame(QWidget):
                 if self.turretButton[y][x].text() == 'F' and self.turret.getCoordinate(y,x) == "*":
                     self.num += 1
         if self.num == self.turrets_copy:
-            self.timer.stop()
             self.turretsDisplay.setText("YOU WIN!!")
             self.Boom()
 
     def Boom(self):
+        self.timer.stop()
         for y in range(self.default[1][0]):
             for x in range(self.default[1][1]):
+                if self.turret.getCoordinate(y,x) == "-":
+                    self.turret.setCoordinate(y,x,"0")
                 self.turretButton[y][x].set(self.turret.getCoordinate(self.turretButton[y][x].Y, self.turretButton[y][x].X))
                 self.turretButton[y][x].setEnabled(False)
-                if self.turretButton[y][x].text() == "*":
+                if self.turret.getCoordinate(y,x) == "*":
                     self.turretButton[y][x].setStyleSheet("background-color : red")
 
-
     def Clear(self):
+        self.test_2 = 0
         for y in range(self.default[1][0]):
             for x in range(self.default[1][1]):
                 self.turretButton[y][x].set(' ')
@@ -187,29 +179,7 @@ class TurretGame(QWidget):
         time_str = "%02d:%02d" % (m, s)
         self.timerDisplay.setText(time_str)
         if time_str == "59:59":
-            self.timer.stop()
             self.Boom()
-
-    def MakeRecusive(self, turret):
-        returret = []
-        for i in turret:
-            recol = []
-            for j in i:
-                recol.append(j)
-            returret.append((recol))
-        return returret
-
-    def R(self, tile, x, y):
-        X = [-1,0,1,-1,1,-1,0,1]
-        Y = [-1,-1,-1,0,0,1,1,1]
-        if tile[y][x] == "0":
-            tile[y][x] = "P"
-            for i in range(8):
-                if 0 <= x +X[i] <= self.default[1][1]-1 and 0 <= y + Y[i] <= self.default[1][0]-1 :
-                    self.R(tile,x + X[i],y + Y[i])
-        else:
-            tile[y][x] = "P"
-        return tile
 
     def ButtonEvent(self):
         button = self.sender()
