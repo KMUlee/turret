@@ -40,6 +40,8 @@ class TurretGame(QWidget):
         self.default = [0.2, [15, 10]]
         self.turretsDisplay = QLineEdit()
 
+        #color
+        self.color = ["blue","green",'red','darkblue','brown','pink','purple','yellow']
         #Label
         label = QLabel('Minesweeper!')
         font = label.font()
@@ -108,18 +110,21 @@ class TurretGame(QWidget):
                 self.Boom()
                 return
             if self.turret.getCoordinate(y, x) == "0":
-                self.turretButton[y][x].set("0")
-                self.turret.setCoordinate(y,x,"-")
+                self.turretButton[y][x].set("")
+                self.turretButton[y][x].setStyleSheet("color : black")
+                self.turret.setCoordinate(y,x,"")
                 self.turretButton[y][x].setEnabled(False)
-                self.turretButton[y][x].setStyleSheet("background-color : white")
                 for i in range(8):
                     if 0 <= x + X[i] <= self.default[1][1] - 1 and 0 <= y + Y[i] <= self.default[1][0] - 1:
                         self.find(x + X[i], y + Y[i])
             else:
-                if self.turretButton[y][x].text() == "0":
+                if self.turretButton[y][x].text() == "":
                     return
                 self.turretButton[y][x].set(self.turret.getCoordinate(y,x))
-                self.turretButton[y][x].setStyleSheet("background-color : lightgreen")
+                for i in range(8):
+                    if self.turretButton[y][x].text() == str(i+1):
+                        self.turretButton[y][x].setStyleSheet("color : "+self.color[i])
+                        self.turretButton[y][x].setEnabled(False)
         elif self.test == 0:
             if self.turretButton[y][x].text() == "F":
                 self.turretButton[y][x].set(" ")
@@ -157,12 +162,19 @@ class TurretGame(QWidget):
         self.timer.stop()
         for y in range(self.default[1][0]):
             for x in range(self.default[1][1]):
-                if self.turret.getCoordinate(y,x) == "-":
-                    self.turret.setCoordinate(y,x,"0")
+                if self.turret.getCoordinate(y,x) == "0":
+                    self.turret.setCoordinate(y,x,"")
                 self.turretButton[y][x].set(self.turret.getCoordinate(self.turretButton[y][x].Y, self.turretButton[y][x].X))
+                if self.turretButton[y][x].text() == "":
+                    self.turretButton[y][x].setStyleSheet("color : black")
+                for i in range(8):
+                    if self.turretButton[y][x].text() == str(i+1):
+                        self.turretButton[y][x].setStyleSheet("color : "+self.color[i])
                 self.turretButton[y][x].setEnabled(False)
                 if self.turret.getCoordinate(y,x) == "*":
+                    self.turretButton[y][x].setStyleSheet("color : black")
                     self.turretButton[y][x].setStyleSheet("background-color : red")
+
 
     def Clear(self):
         self.test_2 = 0
