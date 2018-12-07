@@ -1,9 +1,9 @@
 import random
 class Turret():
     def __init__(self):
-        self.turret = 30
+        self.turret = 8
         self.tile = []
-        self.array = [15,10]
+        self.array = [5,5]
 
     def getTurrets(self):
         return self.turret
@@ -49,5 +49,6 @@ class Turret():
 
 if __name__ == '__main__':
     t = Turret()
+    t.game()
     for i in t.tile:
         print(i)
