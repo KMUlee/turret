@@ -37,11 +37,11 @@ class TurretGame(QWidget):
         self.test = 1
         self.test_2 = 0
         self.turretButton = []
-        self.default = [0.2, [15, 10]]
+        self.default = [30, [15, 10]]
         self.turretsDisplay = QLineEdit()
 
         #color
-        self.color = ["blue","green",'red','darkblue','brown','pink','purple','yellow']
+        self.color = ["blue","darkgreen",'red','darkblue','brown','blue green','black','gray']
         #Label
         label = QLabel('Minesweeper!')
         font = label.font()
@@ -108,6 +108,7 @@ class TurretGame(QWidget):
             if self.turret.getCoordinate(y, x) == "*":
                 self.turretsDisplay.setText("BOOM!!")
                 self.Boom()
+                self.turretButton[y][x].setStyleSheet("background-color : red")
                 return
             if self.turret.getCoordinate(y, x) == "0":
                 self.turretButton[y][x].set("")
@@ -173,7 +174,6 @@ class TurretGame(QWidget):
                 self.turretButton[y][x].setEnabled(False)
                 if self.turret.getCoordinate(y,x) == "*":
                     self.turretButton[y][x].setStyleSheet("color : black")
-                    self.turretButton[y][x].setStyleSheet("background-color : red")
 
 
     def Clear(self):
@@ -197,10 +197,10 @@ class TurretGame(QWidget):
         button = self.sender()
         key = button.text()
         if key == "Easy":
-            self.default = [0.1,[15,10]]
+            self.default = [20,[15,10]]
             self.Clear()
         elif key == "Hard":
-            self.default = [0.2,[15,10]]
+            self.default = [30,[15,10]]
             self.Clear()
         elif key == "Flag":
             if self.test == 1:

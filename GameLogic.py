@@ -1,13 +1,12 @@
 import random
 class Turret():
     def __init__(self):
-        self.turrets = 0
-        self.turret = 0.3
+        self.turret = 30
         self.tile = []
-        self.array = [5,5]
+        self.array = [15,10]
 
     def getTurrets(self):
-        return self.turrets
+        return self.turret
 
     def getTile(self):
         return self.tile
@@ -22,20 +21,16 @@ class Turret():
         return self.array
 
     def game(self):
-        self.tile = []
-        self.turrets = 0
-        for i in range(self.array[0]):
-            list = []
-            for j in range(self.array[1])   :
-                p = random.random()
-                if  float(p) < self.turret:
-                    list.append("*")
-                    self.turrets += 1
-                else:
-                    list.append("-")
-            self.tile.append(list)
+        self.tile = [['-' for x in range(self.array[1])]for x in range(self.array[0])]
+        num = 0
         n = self.array[0]
         m = self.array[1]
+        while num < self.turret:
+            x = random.randrange(m)
+            y = random.randrange(n)
+            if self.tile[y][x] != '*':
+                self.tile[y][x] = '*'
+                num += 1
         self.tile = self.find(self.tile,n,m)
 
     def find(self, tile,n,m):
@@ -54,6 +49,5 @@ class Turret():
 
 if __name__ == '__main__':
     t = Turret()
-    t.game()
     for i in t.tile:
         print(i)
