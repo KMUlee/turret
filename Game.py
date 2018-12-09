@@ -1,4 +1,4 @@
-from turret import Game
+from minesweeper import Game
 import time
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLayout, QGridLayout, QVBoxLayout, QHBoxLayout

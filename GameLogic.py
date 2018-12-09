@@ -1,5 +1,5 @@
 import random
-class Turret():
+class Minesweeper():
     def __init__(self):
         self.turret = 8
         self.tile = []
@@ -49,6 +49,11 @@ class Turret():
 
 if __name__ == '__main__':
     t = Turret()
-    t.game()
-    for i in t.tile:
-        print(i)
+    tile = [['-', '-', '-', '*', '-'],
+            ['*', '-', '*', '-', '-'],
+            ['-', '-', '-', '-', '*'],
+            ['-', '-', '-', '*', '*'],
+            ['*', '*', '-', '-', '-'],
+            ]
+    tile = t.find(tile,5,5)
+    print(tile)

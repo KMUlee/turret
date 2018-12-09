@@ -1,8 +1,8 @@
-from GameLogic import Turret
+from GameLogic import Minesweeper
 
 class Game():
     def __init__(self):
-        self.turret = Turret()
+        self.turret = Minesweeper()
         self.tile = []
 
     def Setting(self,n,list):

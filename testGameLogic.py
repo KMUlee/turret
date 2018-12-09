@@ -1,10 +1,10 @@
-from GameLogic import Turret
+from GameLogic import Minesweeper
 import unittest
 
 class TestLogic(unittest.TestCase):
 
     def setUp(self):
-        self.g = Turret()
+        self.g = Minesweeper()
 
     def tearDown(self):
         pass
@@ -21,6 +21,7 @@ class TestLogic(unittest.TestCase):
                 ['1', '2', '2', '4', '*'],
                 ['2', '2', '2', '*', '*'],
                 ['*', '*', '2', '2', '2']]
-        self.g.find(tile,5,5)
-        print("fuck")
         self.assertEqual(self.g.find(tile,5,5),answer)
+
+if __name__ == '__main__':
+    unittest.main()
